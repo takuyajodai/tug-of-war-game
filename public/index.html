@@ -60,8 +60,8 @@
 
         canvas.addEventListener('mousemove', (e) => {
             if (dragging) {
-                currentDragX = e.clientX - dragStartX;
-                socket.emit('drag', currentDragX); // サーバに送信
+                const dragX = -(e.clientX - dragStartX); // 符号を反転
+                socket.emit('drag', dragX); // サーバに送信
             }
         });
 
