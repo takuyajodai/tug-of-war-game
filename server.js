@@ -21,7 +21,7 @@ setInterval(() => {
         // 2人のドラッグ量の差分を計算
         const dragDiff = (dragValues[0]?.dragX || 0) - (dragValues[1]?.dragX || 0);
 
-        // 綱の位置を更新（速度を考慮）
+        // 綱の位置を更新
         ropePosition += dragDiff * ROPE_SPEED;
 
         // 綱の移動範囲を制限
