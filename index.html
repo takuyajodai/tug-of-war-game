@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tug of War Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        canvas {
+            border: 1px solid black;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tug of War Game</h1>
+    <!-- ゲーム表示用のキャンバス -->
+    <canvas id="gameCanvas" width="600" height="200"></canvas>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const socket = io();
+
+        let ropePosition = 0;
+
+        // 綱を描画
+        function drawRope(position) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2 + position, canvas.height / 2);
+            ctx.lineTo(canvas.width / 2 - position, canvas.height / 2);
+            ctx.strokeStyle = 'blue';
+            ctx.lineWidth = 5;
+            ctx.stroke();
+        }
+
+        // サーバから綱の位置を受信して描画
+        socket.on('update', (position) => {
+            ropePosition = position;
+            drawRope(ropePosition);
+        });
+
+        // キーボード操作で綱を引っ張る
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                socket.emit('pull', -1); // 左に引っ張る
+            } else if (e.key === 'ArrowRight') {
+                socket.emit('pull', 1); // 右に引っ張る
+            }
+        });
+    </script>
+</body>
+</html>
