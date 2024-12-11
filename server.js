@@ -11,7 +11,7 @@ let players = {}; // プレイヤーのドラッグ情報を保存
 let ropePosition = 0; // 綱の中点位置
 const ROPE_SPEED = 0.5; // 綱の移動速度
 
-// 静的ファイルの提供
+// 静的ファイルを提供
 app.use(express.static('public'));
 
 // 定期的に綱の位置を計算してクライアントに送信（30msごと）
@@ -19,7 +19,7 @@ setInterval(() => {
     const dragValues = Object.values(players);
     if (dragValues.length === 2) {
         // 2人のドラッグ量の差分を計算
-        const dragDiff = dragValues[0].dragX - dragValues[1].dragX;
+        const dragDiff = (dragValues[0]?.dragX || 0) - (dragValues[1]?.dragX || 0);
 
         // 綱の位置を更新（速度を考慮）
         ropePosition += dragDiff * ROPE_SPEED;

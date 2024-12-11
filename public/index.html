@@ -28,6 +28,7 @@
 
         let dragging = false;
         let dragStartX = 0;
+        let currentDragX = 0;
 
         // 綱の初期位置
         let ropePosition = 0;
@@ -59,17 +60,21 @@
 
         canvas.addEventListener('mousemove', (e) => {
             if (dragging) {
-                const dragX = e.clientX - dragStartX;
-                socket.emit('drag', dragX); // ドラッグ量をサーバに送信
+                currentDragX = e.clientX - dragStartX;
+                socket.emit('drag', currentDragX); // サーバに送信
             }
         });
 
         canvas.addEventListener('mouseup', () => {
             dragging = false;
+            currentDragX = 0;
+            socket.emit('drag', currentDragX); // ドラッグ量リセット
         });
 
         canvas.addEventListener('mouseleave', () => {
             dragging = false;
+            currentDragX = 0;
+            socket.emit('drag', currentDragX); // ドラッグ量リセット
         });
 
         // 初期状態の描画
